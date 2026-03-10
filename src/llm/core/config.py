@@ -21,3 +21,11 @@ class OpenAIConfig(LLMConfig):
 
 class AnthropicConfig(LLMConfig):
     model: str = "claude-3-haiku-20240307"
+
+
+class OllamaConfig(LLMConfig):
+    """Конфигурация для Ollama."""
+
+    base_url: str = "http://localhost:11434"
+    model: str = "llama2"
+    timeout: int = 120
