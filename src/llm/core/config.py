@@ -21,6 +21,8 @@ class OpenAIConfig(LLMConfig):
 
 class AnthropicConfig(LLMConfig):
     model: str = "claude-3-haiku-20240307"
+    max_tokens: int = 1000
+    temperature: float = 0.7
 
 
 class OllamaConfig(LLMConfig):

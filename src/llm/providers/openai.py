@@ -49,7 +49,7 @@ class OpenAIClient(BaseLLMClient):
                 "Client not initialized. Call _setup_client() first."
             )
 
-        openai_messages = [msg.dict() for msg in messages]
+        openai_messages = [msg.model_dump() for msg in messages]
 
         try:
             response = await self._client.chat.completions.create(

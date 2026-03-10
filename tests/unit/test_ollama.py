@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -14,12 +14,15 @@ async def test_ollama_generate_success():
 
     mock_response = AsyncMock()
     mock_response.status_code = 200
-    mock_response.json.return_value = {
-        "model": "llama2",
-        "created_at": "2023-12-01T12:00:00Z",
-        "response": "Привет! Чем могу помочь?",
-        "total_duration": 1234567890,
-    }
+    mock_response.json = MagicMock(
+        return_value={
+            "model": "llama2",
+            "created_at": "2023-12-01T12:00:00Z",
+            "response": "Привет! Чем могу помочь?",
+            "total_duration": 1234567890,
+        }
+    )
+    mock_response.raise_for_status = MagicMock()
 
     with patch.object(client, "_client", AsyncMock()) as mock_httpx:
         mock_httpx.post.return_value = mock_response
@@ -30,3 +33,4 @@ async def test_ollama_generate_success():
         assert response.id.startswith("ollama-")
         assert response.choices[0]["message"]["content"] == "Привет! Чем могу помочь?"
         assert response.model == "llama2"
+        assert response.usage["total_tokens"] == 1234  # 1234567890 // 1_000_000 ≈ 1234
