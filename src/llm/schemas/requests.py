@@ -10,6 +10,7 @@ class Message(BaseModel):
 
 class CompletionRequest(BaseModel):
     messages: List[Message]
+    provider: str = "openai"  # openai, anthropic, ollama
     temperature: Optional[float] = 0.7
     max_tokens: Optional[int] = 1000
     stream: bool = False
